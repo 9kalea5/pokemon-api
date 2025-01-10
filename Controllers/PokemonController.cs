@@ -25,7 +25,7 @@ namespace PokemonAPI.Controllers
             var pokemons = await _pokemonService.GetAllAsync();
             return Ok(pokemons);
         }
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Pokemon>> GetById(string id)
         {
@@ -63,17 +63,3 @@ namespace PokemonAPI.Controllers
             await _pokemonService.UpdateAsync(id, pokemon);
             return NoContent();
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var pokemon = await _pokemonService.GetByIdAsync(id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
-            await _pokemonService.DeleteAsync(id);
-            return NoContent();
-        }
-    }
-}
