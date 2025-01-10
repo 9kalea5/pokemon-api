@@ -27,3 +27,26 @@ namespace PokemonAPI.Services
             var mongoDatabase = mongoClient.GetDatabase(pokemonDatabaseSettings.Value.DatabaseName);
             _pokemonCollection = mongoDatabase.GetCollection<Pokemon>(pokemonDatabaseSettings.Value.PokemonCollectionName);
         }
+
+        public async Task<List<Pokemon>> GetAllAsync() =>
+            await _pokemonCollection.Find(_ => true).ToListAsync();
+
+        public async Task<Pokemon> GetByIdAsync(string id) =>
+            await _pokemonCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+        public async Task<List<Pokemon>> GetByTypeAsync(string type) =>
+            await _pokemonCollection.Find(x => x.Type == type).ToListAsync();
+
+        public async Task<Pokemon> CreateAsync(Pokemon pokemon)
+        {
+            await _pokemonCollection.InsertOneAsync(pokemon);
+            return pokemon;
+        }
+
+        public async Task UpdateAsync(string id, Pokemon pokemon) =>
+            await _pokemonCollection.ReplaceOneAsync(x => x.Id == id, pokemon);
+
+        public async Task DeleteAsync(string id) =>
+            await _pokemonCollection.DeleteOneAsync(x => x.Id == id);
+    }
+}
