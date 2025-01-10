@@ -63,3 +63,17 @@ namespace PokemonAPI.Controllers
             await _pokemonService.UpdateAsync(id, pokemon);
             return NoContent();
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var pokemon = await _pokemonService.GetByIdAsync(id);
+            if (pokemon == null)
+            {
+                return NotFound();
+            }
+            await _pokemonService.DeleteAsync(id);
+            return NoContent();
+        }
+    }
+}
